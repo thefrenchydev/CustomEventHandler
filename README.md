@@ -43,21 +43,23 @@ A powerful and easy-to-use event management framework for SCP: Secret Laboratory
 Create a class that implements `IEventType` with `Register()` and `Unregister()` methods:
 
 ```csharp
-using CustomEventHandler.Events;
+namespace TemplateTest.Events;
 
-namespace YourPlugin.Events;
+using CustomEventHandler.Events;
+using LabApi.Events.Arguments.PlayerEvents;
+using LabApi.Events.Handlers;
 
 public class PlayerJoinedEvent : IEventType
 {
     // Subscribe to the event
     public void Register() =>
-        PlayerEvents.PlayerJoined += OnPlayerJoined;
+        PlayerEvents.Joined += OnPlayerJoined;
 
     // Unsubscribe from the event
     public void Unregister() =>
-        PlayerEvents.PlayerJoined -= OnPlayerJoined;
+        PlayerEvents.Joined -= OnPlayerJoined;
 
-    private void OnPlayerJoined(PlayerJoinedEvent ev)
+    private void OnPlayerJoined(PlayerJoinedEventArgs ev)
     {
         // Your event logic here
         Log.Info($"{ev.Player.Nickname} joined the server!");
@@ -71,30 +73,46 @@ public class PlayerJoinedEvent : IEventType
 In your main plugin class:
 
 ```csharp
+using System;
+using LabApi.Features;
+using LabApi.Features.Console;
+using LabApi.Loader.Features.Plugins.Enums;
 using CustomEventHandler.Events;
-using LabApi.Loader.Features.Plugins;
 
-namespace YourPlugin
+namespace YourPlugin;
+
+public class MyPlugin : Plugin<Config>
 {
-    public class MyPlugin : Plugin<Config>
+    public static Plugin Instance { get; private set; } = null!;
+    public override string Name => "YourPlugin";
+    public override string Author => "YourName";
+    public override string Description => "A SCP:SL LabAPI plugin";
+    public override Version Version => new(1, 0, 0);
+    public override Version RequiredApiVersion => new(LabApiProperties.CompiledVersion);
+    public override LoadPriority Priority => LoadPriority.High;
+    private IEventList Events => EventsContainer.GetEvents("YourPlugin.Events");
+
+    public override void Enable()
     {
-        private IEventList Events => EventsContainer.GetEvents("YourPlugin.Events");
+        if (Config is null)
+            throw new Exception("Config is null!");
+        
+        if (Config.Debug)
+            Logger.Debug("Debug mode enabled.");
+            
+        Instance = this;
+        
+        // Automatically discover and register all events in your Events namespace
+        Events.RegisterEvents();
+    }
 
-        public override void Enable()
-        {
-            // Automatically discover and register all events in your Events namespace
-            Events.RegisterEvents();
-
-            Log.Info("Plugin enabled with all events registered!");
-        }
-
-        public override void Disable()
-        {
-            // Unregister all events when plugin is disabled
-            Events.UnregisterEvents();
-
-            Log.Info("Plugin disabled and events unregistered!");
-        }
+    public override void Disable()
+    {
+        // Unregister all events when plugin is disabled
+        Events.UnregisterEvents();
+        
+        Log.Info("Plugin disabled and events unregistered!");
+        Instance = null!;
     }
 }
 ```
