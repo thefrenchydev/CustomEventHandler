@@ -1,18 +1,37 @@
+// <copyright file="EventsContainer.cs" company="TheFrenchyDev">
+// This file is part of CustomEventHandler.
+// CustomEventHandler is licensed under the MIT License.
+// See the LICENSE file in the project root for more information.
+// </copyright>
+
 namespace CustomEventHandler.Events;
 
 using System.Linq;
 using System.Reflection;
 
+/// <summary>
+/// Container for managing event registration and unregistration.
+/// This class automatically discovers and manages events implementing <see cref="IEventType"/> in a given namespace.
+/// </summary>
 public static class EventsContainer
 {
+    /// <summary>
+    /// Gets the name of the method used to register events.
+    /// </summary>
     public static string RegisterMethod => "Register";
+
+    /// <summary>
+    /// Gets the name of the method used to unregister events.
+    /// </summary>
     public static string UnregisterMethod => "Unregister";
 
     /// <summary>
-    /// Returns the list of every events present in the namespace only if they implement the interface <see cref="FasterAPI.Events.IEventType"/>.
+    /// Discovers and returns all event classes in the specified namespace.
+    /// Only classes implementing <see cref="IEventType"/> with a parameterless constructor,
+    /// Register, and Unregister methods will be included.
     /// </summary>
-    /// <param name="namespaceName">Le namespace contenant tous les events</param>
-    /// <returns>The <see cref="FasterAPI.Events.IEventList"/> containing all events.</returns>
+    /// <param name="namespaceName">The namespace containing all event classes (e.g., "YourPlugin.Events").</param>
+    /// <returns>An <see cref="IEventList"/> containing all discovered event instances.</returns>
     public static IEventList GetEvents(string namespaceName)
     {
         Assembly callingAssembly = Assembly.GetCallingAssembly();
@@ -26,10 +45,10 @@ public static class EventsContainer
     }
 
     /// <summary>
-    /// Registers all events. Call this method in the plugin Enable method.
+    /// Registers all events in the event list.
+    /// Call this method in your plugin's Enable() method to subscribe to all events.
     /// </summary>
-    /// <param name="events">The <see cref="FasterAPI.Events.IEventList"/> containing all events.</param>
-    /// <returns>void</returns>
+    /// <param name="events">The <see cref="IEventList"/> containing all events to register.</param>
     public static void RegisterEvents(this IEventList events)
     {
         foreach (var eventType in events)
@@ -37,10 +56,10 @@ public static class EventsContainer
     }
 
     /// <summary>
-    /// Unregisters all events. Call this method in the plugin Disable method.
+    /// Unregisters all events in the event list.
+    /// Call this method in your plugin's Disable() method to unsubscribe from all events.
     /// </summary>
-    /// <param name="events">The <see cref="FasterAPI.Events.IEventList"/> containing all events.</param>
-    /// <returns>void</returns>
+    /// <param name="events">The <see cref="IEventList"/> containing all events to unregister.</param>
     public static void UnregisterEvents(this IEventList events)
     {
         foreach (var eventType in events)
