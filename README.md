@@ -21,13 +21,13 @@ A powerful and easy-to-use event management framework for SCP: Secret Laboratory
 ## 📦 Installation
 ### For Plugin Developers (Using CustomEventHandler in your plugin)
 1. Download the latest `CustomEventHandler.dll` from the [Releases](../../releases) page
-2. Place it in your server's `LabMods/dependencies` folder
+2. Place it in your server's `%AppData%\Roaming\SCP Secret Laboratory\LabAPI\dependencies\YourPort` folder
 3. Add a reference to `CustomEventHandler.dll` in your plugin project
 4. Start using the event management features!
 
 ### For Server Owners
 1. Download the latest `CustomEventHandler.dll` from the [Releases](../../releases) page
-2. Place it in your server's `LabMods/dependencies` folder
+2. Place it in your server's `.config\SCP Secret Laboratory\LabAPI\dependencies\YourPort` folder
 3. Restart your server
 
 ## 🚀 Quick Start
@@ -144,14 +144,6 @@ Static class providing event management functionality:
   - Extension method to unregister all events in the list
   - Call in your plugin's `Disable()` method
   - Example: `events.UnregisterEvents()`
-
-## 🔧 Configuration
-The plugin includes a simple configuration file (`CustomEventHandler/config.yml`):
-
-```yaml
-# Enable debug logging
-debug: true
-```
 
 ## 💡 Best Practices
 1. **Namespace Organization**: Keep all your event handlers in a dedicated namespace (e.g., `YourPlugin.Events`)
