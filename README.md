@@ -1,5 +1,4 @@
 # CustomEventHandler
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![.NET Framework 4.8](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)](https://dotnet.microsoft.com/download/dotnet-framework/net48)
 [![LabAPI](https://img.shields.io/badge/LabAPI-1.1.4-green.svg)](https://www.nuget.org/packages/Northwood.LabAPI/)
@@ -7,7 +6,6 @@
 A powerful and easy-to-use event management framework for SCP: Secret Laboratory plugins using LabAPI. CustomEventHandler automatically discovers, registers, and manages your event handlers, eliminating boilerplate code and streamlining plugin development.
 
 ## 🌟 Features
-
 - **Automatic Event Discovery**: Automatically finds and registers all event classes in a specified namespace
 - **Simple Integration**: Just implement `IEventType` and your events are ready to go
 - **Clean Code**: Reduces boilerplate with automatic registration/unregistration
@@ -16,30 +14,24 @@ A powerful and easy-to-use event management framework for SCP: Secret Laboratory
 - **Easy Debugging**: Built-in debug configuration for development
 
 ## 📋 Requirements
-
 - SCP: Secret Laboratory Dedicated Server
 - LabAPI 1.1.4 or higher
 - .NET Framework 4.8
 
 ## 📦 Installation
-
 ### For Plugin Developers (Using CustomEventHandler in your plugin)
-
 1. Download the latest `CustomEventHandler.dll` from the [Releases](../../releases) page
 2. Place it in your server's `LabMods/dependencies` folder
 3. Add a reference to `CustomEventHandler.dll` in your plugin project
 4. Start using the event management features!
 
 ### For Server Owners
-
 1. Download the latest `CustomEventHandler.dll` from the [Releases](../../releases) page
 2. Place it in your server's `LabMods/dependencies` folder
 3. Restart your server
 
 ## 🚀 Quick Start
-
 ### Creating an Event Handler
-
 Create a class that implements `IEventType` with `Register()` and `Unregister()` methods:
 
 ```csharp
@@ -65,11 +57,9 @@ public class PlayerJoinedEvent : IEventType
         Log.Info($"{ev.Player.Nickname} joined the server!");
     }
 }
-
 ```
 
 ### Using in Your Plugin
-
 In your main plugin class:
 
 ```csharp
@@ -118,16 +108,13 @@ public class MyPlugin : Plugin<Config>
 ```
 
 ## 📖 How It Works
-
 1. **Event Discovery**: `EventsContainer.GetEvents("YourNamespace")` scans the specified namespace for classes implementing `IEventType`
 2. **Validation**: Only classes with a parameterless constructor and both `Register()` and `Unregister()` methods are included
 3. **Registration**: `RegisterEvents()` calls the `Register()` method on each discovered event
 4. **Cleanup**: `UnregisterEvents()` calls the `Unregister()` method to properly clean up when your plugin is disabled
 
 ## 🎯 API Reference
-
 ### `IEventType` Interface
-
 All event handlers must implement this interface:
 
 ```csharp
@@ -143,15 +130,12 @@ public interface IEventType
 Static class providing event management functionality:
 
 #### Methods
-
 - **`GetEvents(string namespaceName)`**
-
   - Discovers all event classes in the specified namespace
   - Returns: `IEventList` containing all discovered events
   - Example: `EventsContainer.GetEvents("YourPlugin.Events")`
 
 - **`RegisterEvents(this IEventList events)`**
-
   - Extension method to register all events in the list
   - Call in your plugin's `Enable()` method
   - Example: `events.RegisterEvents()`
@@ -162,8 +146,7 @@ Static class providing event management functionality:
   - Example: `events.UnregisterEvents()`
 
 ## 🔧 Configuration
-
-The plugin includes a simple configuration file (`CustomEventHandler.yml`):
+The plugin includes a simple configuration file (`CustomEventHandler/config.yml`):
 
 ```yaml
 # Enable debug logging
@@ -171,21 +154,19 @@ debug: true
 ```
 
 ## 💡 Best Practices
-
 1. **Namespace Organization**: Keep all your event handlers in a dedicated namespace (e.g., `YourPlugin.Events`)
 2. **Proper Cleanup**: Always unregister events in your `Disable()` method to prevent memory leaks
 3. **Parameterless Constructors**: Ensure all event classes have a parameterless constructor
 4. **Event Storage**: Store the `IEventList` as a field in your plugin class for easy access during disable
 
 ## 🛠️ Building from Source
-
 ```bash
 # Clone the repository
 git clone https://github.com/YourUsername/CustomEventHandler.git
 cd CustomEventHandler
 
-# Set the LABAPI_REFERENCES environment variable to your LabAPI references folder
-# Example: set LABAPI_REFERENCES=C:\Path\To\LabAPI\References
+# Set the SL_REFERENCES environment variable to your LabAPI references folder
+# Example: set SL_REFERENCES=C:\Path\To\LabAPI\References
 
 # Build the project
 dotnet build -c Release
@@ -194,7 +175,6 @@ dotnet build -c Release
 ```
 
 ## 🤝 Contributing
-
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
 1. Fork the repository
@@ -204,20 +184,12 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 5. Open a Pull Request
 
 ## 📝 License
-
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 👤 Author
-
 **TheFrenchyDev**
 
-## 🙏 Acknowledgments
-
-- LabAPI team for the excellent SCP:SL modding framework
-- The SCP:SL community for continued support
-
 ## 📞 Support
-
 If you encounter any issues or have questions:
 
 - Open an issue on [GitHub Issues](../../issues)
@@ -227,7 +199,6 @@ If you encounter any issues or have questions:
 ## 📊 Version History
 
 ### v1.0.0
-
 - Initial release
 - Automatic event discovery and registration
 - Support for LabAPI 1.1.4
